@@ -1,54 +1,121 @@
-import React from 'react';
-import { ReactComponent as IconCheck } from '../assets/svgs/icon-check.svg';
-import { ReactComponent as IconMoon } from '../assets/svgs/icon-moon.svg';
-import { ReactComponent as IconSun } from '../assets/svgs/icon-sun.svg';
-import {Item as TodoItem} from './Item'
-export const ToDoApp = () => {
-    return (
-        <div className="todo-app">
-            <header className="header-app"> </header>
-            <section className="container">
-                <div className="content">
-                    <div className="title">
-                            <h1>TODO</h1>
-                    </div>
-                    <button id="btn-mode" className="btn-icon">
-                        <IconMoon />
-                    </button>
-                </div>
-                <div className="content">
-                    <div className='card'>
-                        <div className='card-content'>
-                            <TodoItem line={false}></TodoItem>
-                        </div>
-                    </div>
-                </div>
+import React, { useEffect, useReducer, useState } from 'react';
+import { toDoReducer } from '../reducers/toDoReducer';
+import ToDoList from './ToDoList';
 
-                <div className="content">
-                    <div className='card'>
-                        <div className='card-content'>
-                            <TodoItem></TodoItem>
-                            <TodoItem></TodoItem>
-                            <TodoItem></TodoItem>
-                            <TodoItem></TodoItem>
-                            <TodoItem></TodoItem>
-                            <TodoItem></TodoItem>
-                            <TodoItem></TodoItem>
-                            <TodoItem></TodoItem>
-                            <TodoItem></TodoItem>
+const init = () => {
+    return JSON.parse(localStorage.getItem('todos')) || [
+        {
+            id: 1,
+            description: 'Learn HTML',
+            done: true,
+            checked: false,
+        },
+        {
+            id: 2,
+            description: 'Learn CSS',
+            done: false,
+            checked: true,
+        },
+        {
+            id: 3,
+            description: 'Learn JavaScript',
+            done: false,
+            checked: false,
+        },
+        {
+            id: 4,
+            description: 'Learn React',
+            done: true,
+            checked: false,
+        },
+        {
+            id: 5,
+            description: 'Learn NextJS',
+            done: true,
+            checked: true,
+        }
+    ];
+};
+
+const ToDoApp = () => {
+    const [ todos, dispath ] = useReducer(toDoReducer, [], init);
+    const [ mode, setMode] = useState('moon')
+    useEffect(() => {
+        localStorage.setItem('todos', JSON.stringify(todos));
+        console.log('Me renderice de nuevo me dio ansiedad')
+    }, [todos]);
+    const handleMode = () => setMode(mode === 'moon' ? 'sun' : 'moon');
+    const handleAdd = (newTodo) => {
+        dispath({
+            type: 'checked',
+            payload: newTodo
+        });
+    }
+    const handleActive = (id) => {
+        dispath({
+            type: 'checked',
+            payload: id
+        });
+    }
+    const handleDelete = (id) => {
+        dispath({
+            type: 'delete',
+            payload: id
+        });
+    }
+    const handleToggle = (id) => {
+        dispath({
+            type: 'toggle',
+            payload: id
+        });
+    }
+    return (
+        <div className={`app ${mode}`}> 
+            <div className={`container ${mode}`}>
+                <div className='box box-header'>
+                    <h1 className='title'>TODO</h1> 
+                    <button 
+                        onClick={handleMode}
+                        className={`btn btn-${mode}`}
+                    ></button>
+                </div>
+                <div className={`box box-content ${mode}`}>
+                    <form className='form'>
+                        <label className="container-checkbox">
+                            <input 
+                                type="checkbox" 
+                                className='checkbox' />
+                            <span className="checkmark"></span>
+                        </label> 
+                        <input 
+                            type='text' 
+                            placeholder='Create a new todo...' 
+                            name="description"
+                            className="form-control" 
+                            autoComplete="off" 
+                        ></input>
+                    </form>
+                </div>
+                <div className={`box box-content ${mode}`}>
+                    <ToDoList 
+                        todos={todos}
+                        handleActive={handleActive}
+                        handleDelete={handleDelete}
+                        handleToggle={handleToggle}
+                    />
+                    <div className='footer-box'>
+                        <span>{todos.length} items left</span>
+                        <div className='footer-center'>
+                            <button className='action'>All</button>
+                            <button className='action'>Active</button>
+                            <button className='action'>Completed</button> 
                         </div>
-                        <div className='card-footer'>
-                            <span>5 items left</span>
-                            <button className='btn'> All</button>
-                            <button className='btn'> Active</button>
-                            <button className='btn'> Completed</button>
-                            <button className='btn'> Clear Completed</button>
-                        </div>
+                        <button className='action'>Clear Complete</button>
                     </div>
                 </div>
-            </section>
-        </div>
-      );
+            </div>
+        </div> 
+    );
 }
 
 export default ToDoApp;

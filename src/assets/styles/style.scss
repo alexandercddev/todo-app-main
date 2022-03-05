@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
 
 $brightBlue: hsl(220, 98%, 61%);
-$checkBackground: linear-gradient(180deg, hsl(192, 100%, 67%) 0%, hsl(280, 87%, 65%) 100%);
+$checkBackground: linear-gradient(-225deg, hsl(192, 100%, 67%) 0%, hsl(280, 87%, 65%) 100%);
  
 $veryLightGray: hsl(0, 0%, 98%);
 $veryLightGrayishBlue: hsl(236, 33%, 92%);
@@ -15,102 +15,255 @@ $lightGrayishBlue: hsl(234, 39%, 85%);
 $lightGrayishBlueHover: hsl(236, 33%, 92%);
 $darkGrayishBlue: hsl(234, 11%, 52%);
 $veryDarkGrayishBlue: hsl(233, 14%, 35%);
-$veryDarkGrayishBlue: hsl(237, 14%, 26%);
+$veryDarkGrayishBlue2: hsl(237, 14%, 26%);
 
 * {
     margin: 0px;
     padding: 0px;
     font-family: 'Open Sans', sans-serif;
+    box-sizing: border-box;
 }
 
-body {
+.app {
     background-color: $veryLightGrayishBlue;
-}
- 
-header {
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-image: url('../images/bg-desktop-light.jpg');
-    height: 300px;
+    overflow-x: hidden;
     width: 100vw;
-    position: absolute;
-    z-index: -1;
+    height: 100vh;
 }
-
-.title {
-    color: $lightGrayishBlueHover;
-    font-weight: bold;
-    letter-spacing: 10px;
-    font-size: 30px;
+.app.sun {
+    background-color: $veryDarkBlue; 
 }
-
 .container { 
-    width: 100%; 
-    display: flex; 
+    display: flex;
     flex-direction: column;
-    align-items: center;
-    padding-top: 100px;
+    align-items: center; 
+    height: 18.5em;
+    width: 100vw;
+    object-fit: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    animation: intro 0.75s linear both;
 }
+.container.sun {
+    background-image: url('../images/bg-desktop-dark.jpg');
+}
+.container.moon {
+    background-image: url('../images/bg-desktop-light.jpg');
+} 
 
-.content {
-    width: 350px;
+.box {
+    min-width: 350px;
+    width: 400px;
+    display: flex;
+    justify-content: space-between; 
+}
+.box.sun {
+    background-color: $veryDarkGrayishBlue2;
+    &>form> input {
+        background-color: $veryDarkGrayishBlue2;
+    }
+    &>.ul-todos>.li-todo>.container-checkbox>.checkmark {
+        background-color: $veryDarkGrayishBlue;
+    }
+}
+.box-header  {
+    margin: 5em 0 3em 0;
+    align-items: center;
+}
+.title {
+    color: $veryLightGray;
+    letter-spacing: .3em;
+}
+.box-content {
+    border-radius: 0.25em;
+    background-color: $veryLightGray;
+    margin: 1em 0 1em 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    box-shadow: 0 15px 15px hsla(235, 24%, 19%, 0.5);
+}
+.footer-box {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5em 1.5em; 
+
+    &>span {
+        display: flex;
+        align-items: center;
+    }
+} 
+.action {
+    cursor: pointer;  
+    background-color: transparent; 
+    background-repeat: no-repeat;
+    border: none;
+    object-fit: cover;  
+    margin: 0.25em;
+    font-size: 0.80em; 
+}
+.form {
+    display: flex; 
+    align-items: center;
+    width: 100%;
+    height: 3em;
+    contain: content;
+    padding: 0.5em 1.5em;
+}
+.form-control {
+    width: 100%;
+    height: 3em;
+    border: none;
+    border-radius: 0.25em; 
+    padding-left: 1.25em;
+    font-weight: bold;
+}
+.form-control:focus {
+    outline: none;
+} 
+.btn {
+    cursor: pointer;
+    width: 2.4em;
+    height: 2.4em;
+    background-color: transparent; 
+    background-repeat: no-repeat;
+    border: none;
+    object-fit: cover;  
+} 
+.btn.btn-moon {
+    transition: all 0.5 ease-in-out;
+    background-image: url('../images/icon-moon.svg');
+}
+.btn.btn-sun {
+    transition: all 0.5 ease-in-out;
+    background-image: url('../images/icon-sun.svg');
+}
+.ul-todos {
+    list-style: none;
+    width: 100%;
+}
+.li-todo {
+    display: flex; 
+    align-items: center;
+    height: 3em;
+    padding: 0.5em 1.5em; 
+    &:hover {   
+        transition: color  0.8s linear 0.9s;
+        .btn-close {  
+            
+            box-sizing: content-box;  
+            &::before {
+                content: '';
+                position: absolute;
+                width: 2em;
+                height: 0.15em;
+                background-color: $darkGrayishBlue;
+                border-radius: 0.1em;
+                transform: translateX(-1em) rotate(45deg);  
+            }
+            &::after {
+                content: '';
+                position: absolute;
+                width: 2em;
+                height: 0.15em;
+                background-color: $darkGrayishBlue;
+                border-radius: 0.1em;
+                transform: translateX(-1em) rotate(-45deg);  
+            }
+        }
+    }
+}
+.li-todo> .description {
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin: 10px; 
-}
-
-.card {
-    width: 100%;
-    background-color: $veryLightGray;
-    border-radius: 5px;
-    padding: 0px 0px; 
-}
-
-.item {
-    display: flex; 
-    align-items: center; 
-    margin: { 
-        top: 10px;
-        bottom: 10px;
-    };
-    padding: { 
-        left: 10px;
-        right: 10px;
-    };
-}  
-
-input[type=text] {
-    width: 100%;
-    margin: {
-        left: 15px;
-        right: 5px;
-    };
-    font-size: 15px;
-    border: none;
-    outline: none;
+    padding-left: 1.25em; 
+    cursor: pointer;
     font-weight: bold;
-    background-color: transparent;
-    &::first-letter {
-        text-transform: uppercase;
+
+    &.complete {
+        text-decoration: line-through;
+        color: $darkGrayishBlue;
+    }
+}
+.separator {
+    background-color: $darkGrayishBlue;
+    height: 1px;
+    opacity: 0.5;
+    width: 100%;
+}
+span, .action {
+    color: $darkGrayishBlue;
+    font-size: 0.80em;
+    font-weight: 600;
+}
+.container-checkbox {  
+    padding-left: 1.75em;
+    transform: translateY(-0.7em);
+    cursor: pointer; 
+}
+.container-checkbox input { 
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;  
+}
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee; 
+    border-radius: 100%;
+} 
+.container-checkbox:hover input ~ .checkmark {
+    background-color: #ccc;
+    border-top: 1px solid hsl(192, 100%, 67%);
+    border-left: 1px solid hsl(192, 100%, 67%);
+    border-right: 1px solid hsl(280, 87%, 65%); 
+    border-bottom: 1px solid  hsl(280, 87%, 65%); 
+}
+.container-checkbox:hover input:checked ~ .checkmark {
+    background-color: #ccc;
+    border:none;
+}
+.container-checkbox input:checked ~ .checkmark {
+    background: $checkBackground;
+}
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+} 
+.container input:checked ~ .checkmark:after {
+    display: block;
+    transition: all 0.5s ease-in-out;
+} 
+.container .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+@keyframes intro {
+    from {
+        transform: translateY(-100em);
+    }
+    to {
+        transform: translateY(0);
     }
 }
 
-.btn-icon {
-    width: 25px;
-    height: 25px; 
-    border: none;
-    cursor: pointer; 
-    background: transparent;
-}
-
-.card-content {
-    display: flex;
-    flex-direction: column;
-}
-
-.card-footer {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
+@media screen and (max-width: 450px) {
+    .box {
+        width: 350px;
+    }
 }
