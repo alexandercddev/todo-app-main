@@ -60,8 +60,11 @@ $veryDarkGrayishBlue2: hsl(237, 14%, 26%);
 }
 .box.sun {
     background-color: $veryDarkGrayishBlue2;
-    &>form> input {
-        background-color: $veryDarkGrayishBlue2;
+    &>.form>input[type=text] {
+        background-color: transparent;
+    }
+    &>.form>.container-checkbox>.checkmark {
+        background-color: $veryDarkGrayishBlue;
     }
     &>.ul-todos>.li-todo>.container-checkbox>.checkmark {
         background-color: $veryDarkGrayishBlue;

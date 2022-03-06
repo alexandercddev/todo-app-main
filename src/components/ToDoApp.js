@@ -48,14 +48,11 @@ const ToDoApp = () => {
     const [ todos, dispath ] = useReducer(toDoReducer, [], init); 
     const [ mode, setMode] = useState('moon'); 
     useEffect(() => {
-        localStorage.setItem('todos', JSON.stringify(todos)); 
-        console.log(todos)
-        console.log('Me renderice de nuevo me dio ansiedad')
+        localStorage.setItem('todos', JSON.stringify(todos));   
     }, [todos]);
     const handleMode = () => setMode(mode === 'moon' ? 'sun' : 'moon');
     const handleAdd = (newTodo) => {
-        const last = todos.at(-1);
-        console.log(last)
+        const last = todos.at(-1); 
         dispath({
             type: 'add',
             payload: {

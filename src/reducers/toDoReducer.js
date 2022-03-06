@@ -1,5 +1,4 @@
-
-let init = [];
+ 
 const toDoReducer = ( state = [], action) => {
     switch (action?.type) {
         case 'add': 
