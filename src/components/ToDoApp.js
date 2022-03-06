@@ -54,11 +54,13 @@ const ToDoApp = () => {
     }, [todos]);
     const handleMode = () => setMode(mode === 'moon' ? 'sun' : 'moon');
     const handleAdd = (newTodo) => {
+        const last = todos.at(-1);
+        console.log(last)
         dispath({
             type: 'add',
             payload: {
                 ...newTodo,
-                id: todos.length + 1
+                id: last !== undefined ? last.id + 1 : 1
             }
         });
     }
