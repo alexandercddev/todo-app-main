@@ -1,5 +1,7 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import { toDoReducer } from '../reducers/toDoReducer';
+import ToDoAdd from './ToDoAdd';
+import ToDoFilters from './ToDoFilters';
 import ToDoList from './ToDoList';
 
 const init = () => {
@@ -9,49 +11,58 @@ const init = () => {
             description: 'Learn HTML',
             done: true,
             checked: false,
+            view: true,
         },
         {
             id: 2,
             description: 'Learn CSS',
             done: false,
             checked: true,
+            view: true,
         },
         {
             id: 3,
             description: 'Learn JavaScript',
             done: false,
             checked: false,
+            view: true,
         },
         {
             id: 4,
             description: 'Learn React',
             done: true,
             checked: false,
+            view: true,
         },
         {
             id: 5,
             description: 'Learn NextJS',
             done: true,
             checked: true,
+            view: true,
         }
     ];
 };
 
 const ToDoApp = () => {
-    const [ todos, dispath ] = useReducer(toDoReducer, [], init);
-    const [ mode, setMode] = useState('moon')
+    const [ todos, dispath ] = useReducer(toDoReducer, [], init); 
+    const [ mode, setMode] = useState('moon'); 
     useEffect(() => {
-        localStorage.setItem('todos', JSON.stringify(todos));
+        localStorage.setItem('todos', JSON.stringify(todos)); 
+        console.log(todos)
         console.log('Me renderice de nuevo me dio ansiedad')
     }, [todos]);
     const handleMode = () => setMode(mode === 'moon' ? 'sun' : 'moon');
     const handleAdd = (newTodo) => {
         dispath({
-            type: 'checked',
-            payload: newTodo
+            type: 'add',
+            payload: {
+                ...newTodo,
+                id: todos.length + 1
+            }
         });
     }
-    const handleActive = (id) => {
+    const handleChecked = (id) => {
         dispath({
             type: 'checked',
             payload: id
@@ -69,6 +80,26 @@ const ToDoApp = () => {
             payload: id
         });
     }
+    const handleAll = () => { 
+        dispath({
+            type: 'filter-all'
+        });
+    }
+    const handleActive = () => {
+        dispath({
+            type: 'filter-checked' 
+        });
+    }
+    const handleCompleted = () => {
+        dispath({
+            type: 'filter-done' 
+        });
+    }
+    const handleClearCompleted = () => {
+        dispath({
+            type: 'clear'
+        });
+    }
     return (
         <div className={`app ${mode}`}> 
             <div className={`container ${mode}`}>
@@ -80,38 +111,39 @@ const ToDoApp = () => {
                     ></button>
                 </div>
                 <div className={`box box-content ${mode}`}>
-                    <form className='form'>
-                        <label className="container-checkbox">
-                            <input 
-                                type="checkbox" 
-                                className='checkbox' />
-                            <span className="checkmark"></span>
-                        </label> 
-                        <input 
-                            type='text' 
-                            placeholder='Create a new todo...' 
-                            name="description"
-                            className="form-control" 
-                            autoComplete="off" 
-                        ></input>
-                    </form>
+                    <ToDoAdd 
+                        handleAdd={handleAdd}
+                    />
                 </div>
                 <div className={`box box-content ${mode}`}>
                     <ToDoList 
                         todos={todos}
-                        handleActive={handleActive}
+                        handleChecked={handleChecked}
                         handleDelete={handleDelete}
                         handleToggle={handleToggle}
                     />
                     <div className='footer-box'>
                         <span>{todos.length} items left</span>
-                        <div className='footer-center'>
-                            <button className='action'>All</button>
-                            <button className='action'>Active</button>
-                            <button className='action'>Completed</button> 
-                        </div>
-                        <button className='action'>Clear Complete</button>
+                        <ToDoFilters  
+                            className={`desk`}
+                            handleAll={handleAll}
+                            handleActive={handleActive}
+                            handleCompleted={handleCompleted}
+                        />
+                        <button 
+                            className='action'
+                            onClick={handleClearCompleted}
+                        >Clear Completed</button>
                     </div>
+                </div>
+                <div className={`box box-content ${mode} mobile`}>
+                    <div className='footer-box'>
+                        <ToDoFilters 
+                            handleAll={handleAll}
+                            handleActive={handleActive}
+                            handleCompleted={handleCompleted}
+                        />    
+                    </div> 
                 </div>
             </div>
         </div> 

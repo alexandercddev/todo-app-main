@@ -1,4 +1,5 @@
 
+let init = [];
 const toDoReducer = ( state = [], action) => {
     switch (action?.type) {
         case 'add': 
@@ -16,7 +17,21 @@ const toDoReducer = ( state = [], action) => {
                 ( item.id === action.payload )
                 ? {...item, checked: !item.checked}
                 : item
-            )); 
+            ));
+        case 'filter-all': 
+            return state.map( item => (
+                {...item, view: true}
+            ));
+        case 'filter-checked': 
+            return state.map( item => (
+                {...item, view: item.checked}
+            ));
+        case 'filter-done': 
+            return state.map( item => (
+                {...item, view: item.done}
+            ));
+        case 'clear': 
+            return state.filter( item => !item.done);
         default:
             return  state;
     }

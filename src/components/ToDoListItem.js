@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ToDoListItem = ({ id, description, done, checked, handleDelete, handleToggle, handleActive}) => {
+const ToDoListItem = ({ id, description, done, checked, handleDelete, handleToggle, handleChecked}) => {
     return ( 
         <>
             <li className='li-todo'>
@@ -9,7 +9,7 @@ const ToDoListItem = ({ id, description, done, checked, handleDelete, handleTogg
                         type="checkbox" 
                         className='checkbox' 
                         checked={checked}
-                        onChange={() => {handleActive(id)}}/>
+                        onChange={() => {handleChecked(id)}}/>
                     <span className="checkmark"></span>
                 </label> 
                 <span 

@@ -252,6 +252,14 @@ span, .action {
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
 }
+.mobile {
+    display: none;
+    align-items: center;
+}
+
+.active {
+    color: $brightBlue;
+}
 
 @keyframes intro {
     from {
@@ -264,6 +272,12 @@ span, .action {
 
 @media screen and (max-width: 450px) {
     .box {
-        width: 350px;
+        width: 300px;
+    }
+    .desk {
+        display: none;
+    }
+    .mobile {
+        display: flex;
     }
 }
